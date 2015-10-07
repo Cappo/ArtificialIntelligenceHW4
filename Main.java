@@ -11,45 +11,50 @@ public class Main {
 			input = scanner.nextLine();
 			if (new String("quit").equals(input)) exit = true;
 			else if (new String("play").equals(input)){
-				System.out.print("\nNew game:\n\nSelect player 1:\n1 - Human\n2 - Beginner AI\n3 - Advanced AI\nInput: ");
+				System.out.print("\nNew game:\n\nSelect player 1:\n1 - Human\n2 - Beginner AI\n3 - Advanced AI\n4 - Master AI\nInput: ");
 				Player p1, p2;
 				int playerSelection = 0;
-				while(playerSelection < 1 || playerSelection > 3){
+				while(playerSelection < 1 || playerSelection > 4){
 					while(!scanner.hasNextInt()) {
 					    scanner.next();
-					    System.out.println("Enter 1 - 3: ");
+					    System.out.println("Enter 1 - 4: ");
 					}
 					playerSelection = scanner.nextInt();
-					if(playerSelection < 1 || playerSelection > 3)
-						System.out.println("Enter 1 - 3: ");
+					if(playerSelection < 1 || playerSelection > 4)
+						System.out.println("Enter 1 - 4: ");
 				}
 				switch (playerSelection){
 				case 1: p1 = new Human('X', 1); break;
 				case 2: p1 = new Beginner('X', 1); break;
 				case 3: p1 = new Advanced('X', 1, 2); break;
+                                case 4: p1 = new Master('X', 1); break;
 				default: p1 = new Human('X', 1); break;
 				}
-				System.out.print("\nSelect player 2:\n1 - Human\n2 - Beginner AI\n3 - Advanced AI\nInput: ");
+				System.out.print("\nSelect player 2:\n1 - Human\n2 - Beginner AI\n3 - Advanced AI\n4 - Master AI\nInput: ");
 				playerSelection = 0;
-				while(playerSelection < 1 || playerSelection > 3){
+				while(playerSelection < 1 || playerSelection > 4){
 					while(!scanner.hasNextInt()) {
 					    scanner.next();
-					    System.out.println("Enter 1 - 3: ");
+					    System.out.println("Enter 1 - 4: ");
 					}
 					playerSelection = scanner.nextInt();
-					if(playerSelection < 1 || playerSelection > 3)
-						System.out.println("Enter 1 - 3: ");
+					if(playerSelection < 1 || playerSelection > 4)
+						System.out.println("Enter 1 - 4: ");
 				}
 				switch (playerSelection){
 				case 1: p2 = new Human('O', 2); break;
 				case 2: p2 = new Beginner('O', 2); break;
 				case 3: p2 = new Advanced('O', 1, 2); break;
+                                case 4: p2 = new Master('O', 2); break;
 				default: p2 = new Human('O', 2); break;
 				}
 				Game game = new Game(p1, p2);
 				Player winner = game.playGame();
 				input = scanner.nextLine(); // Get some junk that gets left over and menu only displays once after game
-			} else if (new String("tournament").equals(input)){}
+			} else if (new String("tournament").equals(input)){
+                            Tournament tourney = new Tournament();
+                            tourney.runTests();
+                        }
 		}
 			
 		System.out.println("\nThanks for playing!");
