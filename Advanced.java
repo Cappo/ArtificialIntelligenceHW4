@@ -168,6 +168,55 @@ public class Advanced extends Player {
 	 * @return - value of utility
 	 */
 	private int evaluateUtility(Board gameBoard, int player) {
+		int utility = 0;
+
+		//string arrays that hold string representations of rows, columns and diagonals
+		String[] rows = new String[gameBoard.getBoardSize()];
+		Arrays.fill(rows, "");
+
+		String[] columns = new String[gameBoard.getBoardSize()];
+		Arrays.fill(columns, "");
+
+		String[] diagonals = new String[6]; //had to hard code six, change if changing board size
+		Arrays.fill(diagonals, "");
+
+		//get list of rows, columns, and diagonals
+		for (int i = 0; i < gameBoard.getBoardSize(); i++) {
+			//get strings of rows
+			rows[i] = new String (gameBoard.getGameBoard()[i]);
+
+			//get strings of columns
+			for (int z = 0; z < gameBoard.getBoardSize(); z++) {
+				columns[z] += gameBoard.getPosition(i,z);
+			}
+
+			//get strings of diagonals
+			diagonals[0] += gameBoard.getPosition(i,i);
+			if (i != gameBoard.getBoardSize() - 1) diagonals[1] += gameBoard.getPosition(i, i+1);
+			if (i != 0) diagonals[2] += gameBoard.getPosition(i, i - 1);
+			diagonals[3] += gameBoard.getPosition(i, gameBoard.getBoardSize() - 1 - i);
+			if (i != gameBoard.getBoardSize() - 1) diagonals[4] += gameBoard.getPosition(i, gameBoard.getBoardSize() - 2 - i);
+			if (i != 0) diagonals[5] += gameBoard.getPosition(i, gameBoard.getBoardSize() - i);
+		}
+
+		//calculate utility
+		utility = checkPatterns(gameBoard, rows, player);
+		utility += checkPatterns(gameBoard, columns, player);
+		utility += checkPatterns(gameBoard, diagonals, player);
+
+		return utility;
+	}
+
+	/**
+	 * Find utility for heuristic function for a particular direction
+	 *
+	 * @param gameBoard - current state of game
+	 * @param directions - rows, columns, or diagonals to search through
+	 * @param player - current player
+	 * @return utility function
+	 */
+	private int checkPatterns(Board gameBoard, String[] directions, int player) {
+
 		int fourMe = 0;
 		int fourYou = 0;
 		int openThreeMe = 0;
@@ -201,105 +250,34 @@ public class Advanced extends Player {
 		String p = "" + me + me + me + me;
 		String q = "" + you + you + you + you;
 
-		String[] columns = new String[gameBoard.getBoardSize()];
-		Arrays.fill(columns, "");
-
-		String[] diagonals = new String[6];
-		Arrays.fill(diagonals, "");
-
-		//iteration through rows
+		//go through strings of particular direction and check for occurrences of combinations above
 		for (int i = 0; i < gameBoard.getBoardSize(); i++) {
-			//get string for row
-			String row = new String (gameBoard.getGameBoard()[i]);
+			String direction = new String (directions[i]);
 
-			//get strings of columns
-			for (int z = 0; z < gameBoard.getBoardSize(); z++) {
-				columns[z] += gameBoard.getPosition(i,z);
-			}
+			//check for four in a rows
+			if (direction.contains(p)) fourMe++;
+			else if (direction.contains(q)) fourYou++;
 
-			//get strings of diagonals
-			diagonals[0] += gameBoard.getPosition(i,i);
-			if (i != gameBoard.getBoardSize() - 1) diagonals[1] += gameBoard.getPosition(i, i+1);
-			if (i != 0) diagonals[2] += gameBoard.getPosition(i, i - 1);
-			diagonals[3] += gameBoard.getPosition(i, gameBoard.getBoardSize() - 1 - i);
-			if (i != gameBoard.getBoardSize() - 1) diagonals[4] += gameBoard.getPosition(i, gameBoard.getBoardSize() - 2 - i);
-			if (i != 0) diagonals[5] += gameBoard.getPosition(i, gameBoard.getBoardSize() - i);
+			//check for open three in a rows
+			else if (direction.contains(g)) openThreeMe++;
+			else if (direction.contains(h)) openThreeMe++;
+			else if (direction.contains(j)) openThreeMe++;
+			else if (direction.contains(k)) openThreeMe++;
+			else if (direction.contains(l)) openThreeYou++;
+			else if (direction.contains(m)) openThreeYou++;
+			else if (direction.contains(n)) openThreeYou++;
+			else if (direction.contains(o)) openThreeYou++;
 
-			//check each combination of substrings for row
-			if (row.contains(p)) fourMe++;
-			else if (row.contains(q)) fourYou++;
-
-			else if (row.contains(g)) openThreeMe++;
-			else if (row.contains(h)) openThreeMe++;
-			else if (row.contains(j)) openThreeMe++;
-			else if (row.contains(k)) openThreeMe++;
-			else if (row.contains(l)) openThreeYou++;
-			else if (row.contains(m)) openThreeYou++;
-			else if (row.contains(n)) openThreeYou++;
-			else if (row.contains(o)) openThreeYou++;
-
-			else if (row.contains(a + ".") || row.contains("." + a)) openTwoMe++;
-			else if (row.contains(b + ".") || row.contains("." + b)) openTwoMe++;
-			else if (row.contains(c + ".") || row.contains("." + c)) openTwoMe++;
-			else if (row.contains(d + ".") || row.contains("." + d)) openTwoYou++;
-			else if (row.contains(e + ".") || row.contains("." + e)) openTwoYou++;
-			else if (row.contains(f + ".") || row.contains("." + f)) openTwoYou++;
-
+			//check for open two in a rows
+			else if (direction.contains(a + ".") || direction.contains("." + a)) openTwoMe++;
+			else if (direction.contains(b + ".") || direction.contains("." + b)) openTwoMe++;
+			else if (direction.contains(c + ".") || direction.contains("." + c)) openTwoMe++;
+			else if (direction.contains(d + ".") || direction.contains("." + d)) openTwoYou++;
+			else if (direction.contains(e + ".") || direction.contains("." + e)) openTwoYou++;
+			else if (direction.contains(f + ".") || direction.contains("." + f)) openTwoYou++;
 		}
 
-		//iterate through columns
-		for (int i = 0; i < gameBoard.getBoardSize(); i++) {
-			String column = new String (columns[i]);
-
-			//check each combination of substrings for column
-			if (column.contains(p)) fourMe++;
-			else if (column.contains(q)) fourYou++;
-
-			else if (column.contains(g)) openThreeMe++;
-			else if (column.contains(h)) openThreeMe++;
-			else if (column.contains(j)) openThreeMe++;
-			else if (column.contains(k)) openThreeMe++;
-			else if (column.contains(l)) openThreeYou++;
-			else if (column.contains(m)) openThreeYou++;
-			else if (column.contains(n)) openThreeYou++;
-			else if (column.contains(o)) openThreeYou++;
-
-			else if (column.contains(a + ".") || column.contains("." + a)) openTwoMe++;
-			else if (column.contains(b + ".") || column.contains("." + b)) openTwoMe++;
-			else if (column.contains(c + ".") || column.contains("." + c)) openTwoMe++;
-			else if (column.contains(d + ".") || column.contains("." + d)) openTwoYou++;
-			else if (column.contains(e + ".") || column.contains("." + e)) openTwoYou++;
-			else if (column.contains(f + ".") || column.contains("." + f)) openTwoYou++;
-
-		}
-
-		//iterate through diagonals
-		for (int i = 0; i < gameBoard.getBoardSize(); i++) {
-			String diagonal = new String (diagonals[i]);
-
-			//check each combination of substring for diagonal
-			if (diagonal.contains(p)) fourMe++;
-			else if (diagonal.contains(q)) fourYou++;
-
-			else if (diagonal.contains(g)) openThreeMe++;
-			else if (diagonal.contains(h)) openThreeMe++;
-			else if (diagonal.contains(j)) openThreeMe++;
-			else if (diagonal.contains(k)) openThreeMe++;
-			else if (diagonal.contains(l)) openThreeYou++;
-			else if (diagonal.contains(m)) openThreeYou++;
-			else if (diagonal.contains(n)) openThreeYou++;
-			else if (diagonal.contains(o)) openThreeYou++;
-
-			else if (diagonal.contains(a + ".") || diagonal.contains("." + a)) openTwoMe++;
-			else if (diagonal.contains(b + ".") || diagonal.contains("." + b)) openTwoMe++;
-			else if (diagonal.contains(c + ".") || diagonal.contains("." + c)) openTwoMe++;
-			else if (diagonal.contains(d + ".") || diagonal.contains("." + d)) openTwoYou++;
-			else if (diagonal.contains(e + ".") || diagonal.contains("." + e)) openTwoYou++;
-			else if (diagonal.contains(f + ".") || diagonal.contains("." + f)) openTwoYou++;
-
-		}
-
-		//calculate and return utility
+		//return utility
 		return 10 * (fourMe - fourYou) + 3 * (openThreeMe - openThreeYou) + (openTwoMe - openTwoYou);
 	}
 
