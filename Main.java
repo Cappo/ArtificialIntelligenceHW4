@@ -44,7 +44,7 @@ public class Main {
 				switch (playerSelection){
 				case 1: p2 = new Human('O', 2); break;
 				case 2: p2 = new Beginner('O', 2); break;
-				case 3: p2 = new Advanced('O', 1, 2); break;
+				case 3: p2 = new Advanced('O', 2, 2); break;
                                 case 4: p2 = new Master('O', 2); break;
 				default: p2 = new Human('O', 2); break;
 				}
