@@ -44,7 +44,7 @@ public class Advanced extends Player {
 	private int[] minimaxDecision(int depth, Board gameBoard, int player) {
 
 		int[] move = {-1, -1}; //holds the current best move
-		int value = -10000; //holds the current best value of move
+		int value = -100000; //holds the current best value of move
 
 		//copy board
 		Board newBoard = new Board(gameBoard);
