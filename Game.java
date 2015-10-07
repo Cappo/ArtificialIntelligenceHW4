@@ -103,7 +103,7 @@ public class Game {
 		// r > l offset 1 column
 		temp = "";
 		for(int i = b.getBoardSize() - 2; i >= 0; i--){
-			temp += b.getPosition(b.getBoardSize() - i - 1, i);
+			temp += b.getPosition(b.getBoardSize() - i - 2, i);
 		}
 		if(temp.contains(p1w)) return this.player1;
 		else if (temp.contains(p2w)) return this.player2;
