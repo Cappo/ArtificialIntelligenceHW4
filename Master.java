@@ -2,13 +2,9 @@
 import java.util.ArrayList;
 
 public class Master extends Advanced {
-    
-    int alpha, beta;
-    
+        
     Master(char c, int iam){
         super(c, iam, 4);
-        alpha = -10000;
-        beta = 10000;
     }
     
     /**
@@ -21,6 +17,13 @@ public class Master extends Advanced {
 	 */
         @Override
 	protected int maxValue(int depth, Board gameBoard, int player) {
+            return maxValue(depth, gameBoard, player, -10000, 10000);
+        }
+        
+        /*
+        Auxiliary method which is only called by override method above
+        */
+        private int maxValue(int depth, Board gameBoard, int player, int alpha, int beta) {
 
 		int value = -10000;
 
@@ -38,7 +41,7 @@ public class Master extends Advanced {
 		//process action and determine min play
 		for(int[] action : actions) {
 			gameBoard.playMove(action, player);
-			value = Math.max(value, minValue(depth - 1, gameBoard, player));
+			value = Math.max(value, minValue(depth - 1, gameBoard, player, alpha, beta));
 			gameBoard.rescindMove(action);
                         if (value >= beta) return value;
                         alpha = Math.max(alpha, value);
@@ -57,6 +60,13 @@ public class Master extends Advanced {
 	 */
         @Override
 	protected int minValue(int depth, Board gameBoard, int player) {
+            return minValue(depth, gameBoard, player, -10000, 10000);
+        }
+        
+        /*
+        Auxiliary method which is only called by override method above
+        */
+	private int minValue(int depth, Board gameBoard, int player, int alpha, int beta) {
 
 		int value = 10000;
 
@@ -74,7 +84,7 @@ public class Master extends Advanced {
 		//process action and find max play
 		for(int[] action : actions) {
 			gameBoard.playMove(action, player);
-			value = Math.min(value, maxValue(depth - 1, gameBoard, player));
+			value = Math.min(value, maxValue(depth - 1, gameBoard, player, alpha, beta));
 			gameBoard.rescindMove(action);
                         if (value <= alpha) return value;
                         beta = Math.min(beta, value);
