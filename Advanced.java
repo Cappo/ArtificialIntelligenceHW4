@@ -80,7 +80,7 @@ public class Advanced extends Player {
 	 * @param player - current player index, 1 for first, 2 for second
 	 * @return int current best valued move to take
 	 */
-	private int maxValue(int depth, Board gameBoard, int player) {
+	protected int maxValue(int depth, Board gameBoard, int player) {
 
 		int value = -10000;
 
@@ -113,7 +113,7 @@ public class Advanced extends Player {
 	 * @param player - current player index, 1 for first, 2 for second
 	 * @return int[] current best valued move to take
 	 */
-	private int minValue(int depth, Board gameBoard, int player) {
+	protected int minValue(int depth, Board gameBoard, int player) {
 
 		int value = 10000;
 
@@ -144,7 +144,7 @@ public class Advanced extends Player {
 	 * @param gameBoard - current game state
 	 * @return list of actions
 	 */
-	private ArrayList<int[]> getActions(Board gameBoard) {
+	protected ArrayList<int[]> getActions(Board gameBoard) {
 		ArrayList<int[]> actions = new ArrayList<int[]>();
 
 		//traverse through board and find open spots
@@ -167,7 +167,7 @@ public class Advanced extends Player {
 	 * @param player - current players turn
 	 * @return - value of utility
 	 */
-	private int evaluateUtility(Board gameBoard, int player) {
+	protected int evaluateUtility(Board gameBoard, int player) {
 		int utility = 0;
 
 		//string arrays that hold string representations of rows, columns and diagonals
