@@ -77,7 +77,11 @@ public class Board {
 	}
 	
 	public char getPosition(int po1, int po2){
-		return this.gameBoard[po1][po2];
+		if(po1 > this.boardSize - 1 || po2 > this.boardSize - 1
+			|| po1 < 0 || po2 < 0)
+			return 0; // junk char
+		else
+			return this.gameBoard[po1][po2];
 	}
 	
 	public Boolean isValidMove(int[] move){
