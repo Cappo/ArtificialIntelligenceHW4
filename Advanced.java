@@ -1,4 +1,4 @@
-import java.util.ArrayList;
+import java.lang.Math;import java.lang.Override;import java.lang.String;import java.lang.System;import java.util.ArrayList;
 import java.util.Arrays;
 
 public class Advanced extends Player {
@@ -28,6 +28,7 @@ public class Advanced extends Player {
 		System.out.println("Move: " + move[0] + " " + move[1]);
 		System.out.println("Expanded nodes: " + expandedNodes);
 		System.out.println("Time for move: " + ((end - start)/ 1000000.00));
+		System.out.println();
 
 		this.expandedNodes = 0;
 
@@ -85,10 +86,16 @@ public class Advanced extends Player {
 
 		expandedNodes++;
 
+		//get heuristic value and return if depth reached
 		if (depth == 0) return evaluateUtility(gameBoard, player);
 
+		//change player
+		player = (player == 1) ? 2 : 1;
+
+		//get list of actions
 		ArrayList<int[]> actions = getActions(gameBoard);
 
+		//process action and determine min play
 		for(int[] action : actions) {
 			gameBoard.playMove(action, player);
 			value = Math.max(value, minValue(depth - 1, gameBoard, player));
@@ -111,11 +118,17 @@ public class Advanced extends Player {
 		int value = 10000;
 
 		expandedNodes++;
-		
+
+		//return heuristic value if depth reached
 		if (depth == 0) return evaluateUtility(gameBoard, player);
 
+		//change player
+		player = (player == 1) ? 2 : 1;
+
+		//get actions
 		ArrayList<int[]> actions = getActions(gameBoard);
 
+		//process action and find max play
 		for(int[] action : actions) {
 			gameBoard.playMove(action, player);
 			value = Math.min(value, maxValue(depth - 1, gameBoard, player));
@@ -134,8 +147,8 @@ public class Advanced extends Player {
 	private ArrayList<int[]> getActions(Board gameBoard) {
 		ArrayList<int[]> actions = new ArrayList<int[]>();
 
+		//traverse through board and find open spots
 		for (int i = 0; i < gameBoard.getBoardSize(); i++) {
-
 			for (int j = 0; j < gameBoard.getBoardSize(); j++) {
 				if (gameBoard.getPosition(i, j) == gameBoard.getNoPlayerChar()) {
 					int[] move = {i,j};
@@ -208,7 +221,7 @@ public class Advanced extends Player {
 			diagonals[0] += gameBoard.getPosition(i,i);
 			if (i != gameBoard.getBoardSize() - 1) diagonals[1] += gameBoard.getPosition(i, i+1);
 			if (i != 0) diagonals[2] += gameBoard.getPosition(i, i - 1);
-			diagonals[3] += gameBoard.getPosition(gameBoard.getBoardSize() - 1 - i, gameBoard.getBoardSize() - 1 - i);
+			diagonals[3] += gameBoard.getPosition(i, gameBoard.getBoardSize() - 1 - i);
 			if (i != gameBoard.getBoardSize() - 1) diagonals[4] += gameBoard.getPosition(i, gameBoard.getBoardSize() - 2 - i);
 			if (i != 0) diagonals[5] += gameBoard.getPosition(i, gameBoard.getBoardSize() - i);
 
