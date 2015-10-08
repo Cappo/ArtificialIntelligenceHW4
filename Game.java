@@ -10,7 +10,9 @@ public class Game {
 		this.gameBoard = new Board(5,player1.playerChar,player2.playerChar,'.');
 		this.turn = player1;
 		
-		System.out.println("\nNew game created!\n\nPlayer 1 - " + this.player1.toString() + "\nPlayer 2 - " + this.player2.toString() + "\n");
+                String p1Type = player1.getClass().toString().split(" ", 2)[1];
+                String p2Type = player2.getClass().toString().split(" ", 2)[1];
+		System.out.println("\nNew game created!\n\nPlayer 1 - " + p1Type + "\nPlayer 2 - " + p2Type + "\n");
 	}
 	
 	public Player playGame(){

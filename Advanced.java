@@ -27,7 +27,7 @@ public class Advanced extends Player {
 
 		System.out.println("Move: " + move[0] + " " + move[1]);
 		System.out.println("Expanded nodes: " + expandedNodes);
-		System.out.println("Time for move: " + ((end - start)/ 1000000.00));
+		System.out.println("Time for move: " + ((end - start)/ 1000000.00) + " ms");
 		System.out.println();
 
 		this.expandedNodes = 0;
